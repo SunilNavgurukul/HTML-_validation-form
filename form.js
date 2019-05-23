@@ -50,27 +50,3 @@ function loop(){
 return true
 }                                    
 
-var express = require('express');
-var app = express();
-var fs = require('fs');
-
-app.use(express.json())
-
-var all_detail = []
-app.get('/process',(req, res) => {
-    var sunil = req.query;
-    if (fs.existsSync('all_detail.json')) {
-        let contents = fs.readFileSync("all_detail.json");
-        let data = JSON.parse(contents);
-        data.push(sunil);
-        let json = JSON.stringify(data, null, 2);    
-        fs.writeFileSync('all_detail.json', json);
-        return res.send(sunil)
-    }
-    let json = JSON.stringify(all_detail, null, 2);    
-    fs.writeFileSync('all_detail.json', json);
-    return res.send(sunil)
-    // res.send(sunil);
-});
-
-app.listen(1234);
