@@ -1,4 +1,3 @@
-
 function loop(){
     var email = document.getElementById("E-Mail").value;               
     var phone = document.getElementById("phonenumber").value;  
@@ -6,8 +5,6 @@ function loop(){
     var password = document.getElementById("pass").value;  
     var first = document.getElementById("fname").value; 
     var last = document.getElementById("lname").value;
-    
-
      function special_chr(password,chr){
         for(var i of chr){
             if(password.includes(i)){
@@ -50,8 +47,30 @@ function loop(){
         document.getElementById('perror').innerHTML = "Password must at least one number";
     return false
     }
-
 return true
 }                                    
 
+var express = require('express');
+var app = express();
+var fs = require('fs');
 
+app.use(express.json())
+
+var all_detail = []
+app.get('/process',(req, res) => {
+    var sunil = req.query;
+    if (fs.existsSync('all_detail.json')) {
+        let contents = fs.readFileSync("all_detail.json");
+        let data = JSON.parse(contents);
+        data.push(sunil);
+        let json = JSON.stringify(data, null, 2);    
+        fs.writeFileSync('all_detail.json', json);
+        return res.send(sunil)
+    }
+    let json = JSON.stringify(all_detail, null, 2);    
+    fs.writeFileSync('all_detail.json', json);
+    return res.send(sunil)
+    // res.send(sunil);
+});
+
+app.listen(1234);
